@@ -64,28 +64,40 @@ namespace CSharpViaTest.Collections._10_EnumerablePractices
 
         class DistinctEnumerator<TSource> : IEnumerator<TSource>
         {
+            IEnumerator<TSource> originalEnumerator;
+            ISet<TSource> result;
             public DistinctEnumerator(IEnumerable<TSource> source, IEqualityComparer<TSource> comparer)
             {
-                throw new NotImplementedException();
+                if(source == null) {
+                    throw new ArgumentNullException(nameof(source));
+                }
+                
+                originalEnumerator = source.GetEnumerator();
+                result = new HashSet<TSource>(comparer);
             }
-
             public bool MoveNext()
             {
-                throw new NotImplementedException();
+                if(originalEnumerator.MoveNext()){
+                    if(result.Add(Current)){
+                        return true;
+                    }
+                    return MoveNext();
+                }
+                return false;
             }
 
             public void Reset()
             {
-                throw new NotImplementedException();
+                originalEnumerator.Reset();
             }
 
-            public TSource Current { get { throw new NotImplementedException(); } }
+            public TSource Current { get { return originalEnumerator.Current; } }
 
             object IEnumerator.Current => Current;
 
             public void Dispose()
             {
-                throw new NotImplementedException();
+                originalEnumerator.Dispose();
             }
         }
 
@@ -231,6 +243,7 @@ namespace CSharpViaTest.Collections._10_EnumerablePractices
         }
 
         [Fact]
+        //failed
         public void NullSource()
         {
             string[] source = null;
@@ -239,6 +252,7 @@ namespace CSharpViaTest.Collections._10_EnumerablePractices
         }
 
         [Fact]
+        //failed
         public void NullSourceCustomComparer()
         {
             string[] source = null;
