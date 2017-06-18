@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Xunit;
 
 namespace CSharpViaTest.Collections._20_YieldPractices
@@ -30,7 +31,13 @@ namespace CSharpViaTest.Collections._20_YieldPractices
 
         public IEnumerable<string> GetStringTriangle(char character, int count)
         {
-            throw new NotImplementedException();
+            for(int i = 0; i < count; i++) {
+                StringBuilder sb = new StringBuilder();
+                for(int j = 0; j <= i; j++){
+                    sb.Append(character);
+                }
+                yield return sb.ToString();
+            }
         }
 
         #endregion

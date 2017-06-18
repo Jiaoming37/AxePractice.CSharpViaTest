@@ -23,7 +23,7 @@ namespace CSharpViaTest.Collections._20_YieldPractices
      */
     public class TakeUntilCatchingAnException
     {
-        readonly int indexThatWillThrow = new Random().Next(2, 10);
+        static readonly int indexThatWillThrow = new Random().Next(2, 10);
 
         IEnumerable<int> GetSequenceOfData()
         {
@@ -38,7 +38,22 @@ namespace CSharpViaTest.Collections._20_YieldPractices
 
         static IEnumerable<int> TakeUntilError(IEnumerable<int> sequence)
         {
-            throw new NotImplementedException();
+            IEnumerator<int> e = sequence.GetEnumerator();
+            bool hasNext = true;
+
+            while(hasNext) {
+                try{
+                    if(e.MoveNext()) {
+                        hasNext = true;
+                    }else {
+                        hasNext = false;
+                        break;
+                    }
+                }catch(Exception) {
+                    break;
+                }
+                yield return e.Current;
+            }
         }
 
         #endregion
