@@ -41,16 +41,15 @@ namespace CSharpViaTest.Collections._10_EnumerablePractices
             if(func == null) throw new ArgumentNullException(nameof(func));
 
             using(IEnumerator<TSource> enumerator = source.GetEnumerator()){
+
                 if(!enumerator.MoveNext()){
-                    // throw new Exception("source is empty");
-                    return default(TSource);
+                    throw new InvalidOperationException();
                 }
                 TSource seed = enumerator.Current;
 
                 while(enumerator.MoveNext()){
                     seed = func(seed, enumerator.Current);
                 } 
-
                 return seed;
             }
         }
@@ -155,16 +154,6 @@ namespace CSharpViaTest.Collections._10_EnumerablePractices
         {
             Func<int, int, int> func = null;
             Assert.Throws<ArgumentNullException>(() => Enumerable.Range(0, 3).MyAggregate(func));
-        }
-
-        [Fact]
-        [SuppressMessage("ReSharper", "ExpressionIsAlwaysNull")]
-        public void TestForEmptySource()
-        {
-            int[] source = { };
-            int expected = 0;
-
-            Assert.Equal(expected, source.MyAggregate((x, y) => x + y));
         }
     }
 }

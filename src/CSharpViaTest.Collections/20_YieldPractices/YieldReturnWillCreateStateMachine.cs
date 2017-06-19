@@ -31,12 +31,26 @@ namespace CSharpViaTest.Collections._20_YieldPractices
 
         public IEnumerable<string> GetStringTriangle(char character, int count)
         {
+            /*
             for(int i = 0; i < count; i++) {
                 StringBuilder sb = new StringBuilder();
                 for(int j = 0; j <= i; j++){
                     sb.Append(character);
                 }
                 yield return sb.ToString();
+            }
+            */
+
+            /* 
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0; i < count; i ++) {
+                sb.Append(character);
+                yield return sb.ToString();
+            }
+            */
+
+            for(int i = 1; i < count + 1; i ++) {
+                yield return new String(character, i);
             }
         }
 

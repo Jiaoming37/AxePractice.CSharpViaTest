@@ -69,20 +69,27 @@ namespace CSharpViaTest.Collections._10_EnumerablePractices
             ISet<TSource> result;
             public DistinctEnumerator(IEnumerable<TSource> source, IEqualityComparer<TSource> comparer)
             {
-                if(source == null) {
-                    throw new ArgumentNullException(nameof(source));
-                }
+                if(source == null) throw new ArgumentNullException(nameof(source));
                 
                 originalEnumerator = source.GetEnumerator();
                 result = new HashSet<TSource>(comparer);
             }
             public bool MoveNext()
             {
+                /* 
                 if(originalEnumerator.MoveNext()){
                     if(result.Add(Current)){
                         return true;
                     }
                     return MoveNext();
+                }
+                return false;
+                */
+
+                while(originalEnumerator.MoveNext()) {
+                    if(result.Add(originalEnumerator.Current)) {
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -244,7 +251,6 @@ namespace CSharpViaTest.Collections._10_EnumerablePractices
         }
 
         [Fact]
-        //failed
         public void NullSource()
         {
             string[] source = null;
@@ -253,7 +259,6 @@ namespace CSharpViaTest.Collections._10_EnumerablePractices
         }
 
         [Fact]
-        //failed
         public void NullSourceCustomComparer()
         {
             string[] source = null;

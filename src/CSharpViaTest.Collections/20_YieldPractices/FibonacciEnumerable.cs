@@ -31,7 +31,7 @@ namespace CSharpViaTest.Collections._20_YieldPractices
     public class FibonacciEnumerable
     {
         #region Please modifies the code to pass the test
-
+        /* 
         static IEnumerable<long> GetFibonacciIntegers()
         {
             for(int i = 0;; i++) {
@@ -43,6 +43,24 @@ namespace CSharpViaTest.Collections._20_YieldPractices
                 return 1;
             }
             return GetCurrent(index - 1) + GetCurrent(index - 2);
+        }
+        */
+
+        static IEnumerable<long> GetFibonacciIntegers()
+        {
+            long previous = 1;
+            long current = 1;
+
+            yield return previous;
+            yield return current;
+
+            while(true) {
+                long temp = previous + current;
+                yield return temp;
+                
+                previous = current;
+                current = temp;
+            }
         }
         
         #endregion
